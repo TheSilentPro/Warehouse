@@ -18,21 +18,17 @@ import java.util.Optional;
  *
  * @param <T> Type
  */
-public class YamlFileDataManager<T extends Collection<T>> extends FileDataManager<T> {
+public class YamlFileDataManager<T> extends FileDataManager<T> {
 
-    private final Class<T> type;
+    private final Class<Collection<T>> type;
     private Yaml yaml;
 
-    public YamlFileDataManager(@Nonnull File file, @Nullable Class<T> type, @Nullable DumperOptions dumperOptions) {
+    public YamlFileDataManager(@Nonnull File file, @Nullable DumperOptions dumperOptions) {
         super(file);
-        this.type = type;
+        //noinspection unchecked
+        this.type = (Class<Collection<T>>) (Class<T>) Collection.class;
         this.yaml = dumperOptions != null ? new Yaml(dumperOptions) : new Yaml();
     }
-
-    public YamlFileDataManager(@Nonnull File file, @Nullable Class<T> type) {
-        this(file, type, null);
-    }
-
     public YamlFileDataManager(@Nonnull File file) {
         this(file, null);
     }

@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.Executor;
@@ -18,7 +17,7 @@ import java.util.concurrent.Executor;
  *
  * @param <T> Type
  */
-public abstract class SQLDataManager<T extends Collection<T>> implements DataManager<T> {
+public abstract class SQLDataManager<T> implements DataManager<T> {
 
     private final String url;
     private final Executor executor;

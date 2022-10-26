@@ -22,7 +22,7 @@ import java.util.Optional;
  *
  * @param <T> Type
  */
-public class JsonFileDataManager<T extends Collection<T>> extends FileDataManager<T> {
+public class JsonFileDataManager<T> extends FileDataManager<T> {
 
     private final Type type;
     private Gson gson;
@@ -31,7 +31,8 @@ public class JsonFileDataManager<T extends Collection<T>> extends FileDataManage
         super(file);
         Validate.notNull(type, "Type can not be null!");
 
-        this.type = TypeToken.get(type).getType();
+        //noinspection unchecked
+        this.type = TypeToken.get((Class<Collection<T>>) type).getType();
         this.gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
     }
 

@@ -5,14 +5,13 @@ import tsp.warehouse.storage.util.Validate;
 
 import javax.annotation.Nonnull;
 import java.io.File;
-import java.util.Collection;
 
 /**
  * Storage contained locally within a file.
  *
  * @param <T> Type
  */
-public abstract class FileDataManager<T extends Collection<T>> implements DataManager<T> {
+public abstract class FileDataManager<T> implements DataManager<T> {
 
     private final File file;
 

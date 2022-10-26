@@ -20,12 +20,8 @@ public class Warehouse {
         return new JsonFileDataManager<>(file, type);
     }
 
-    public static <T extends Collection<T>> YamlFileDataManager<T> yaml(@Nonnull File file, @Nullable Class<T> type, @Nullable DumperOptions dumperOptions) {
-        return new YamlFileDataManager<>(file, type, dumperOptions);
-    }
-
-    public static <T extends Collection<T>> YamlFileDataManager<T> yaml(@Nonnull File file, @Nullable Class<T> type) {
-        return yaml(file, type, null);
+    public static <T extends Collection<T>> YamlFileDataManager<T> yaml(@Nonnull File file, @Nullable DumperOptions dumperOptions) {
+        return new YamlFileDataManager<>(file, dumperOptions);
     }
 
     public static <T extends Collection<T>> YamlFileDataManager<T> yaml(@Nonnull File file) {
