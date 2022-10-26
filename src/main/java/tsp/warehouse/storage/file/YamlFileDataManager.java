@@ -46,7 +46,7 @@ public class YamlFileDataManager<T extends Collection<T>> extends FileDataManage
     }
 
     @Override
-    public Optional<T> load() {
+    public Optional<Collection<T>> load() {
         try {
             FileReader reader = new FileReader(getFile());
             return Optional.ofNullable(type != null ? yaml.loadAs(reader, type) : yaml.load(reader));
@@ -57,7 +57,7 @@ public class YamlFileDataManager<T extends Collection<T>> extends FileDataManage
     }
 
     @Override
-    public boolean save(T t) {
+    public boolean save(Collection<T> t) {
         try (FileWriter writer = new FileWriter(getFile())) {
             yaml.dump(t, writer);
             return true;

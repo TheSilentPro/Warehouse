@@ -10,21 +10,21 @@ import java.util.concurrent.Executor;
  *
  * @param <T> Type
  */
-public interface DataManager<T extends Collection<T>> {
+public interface DataManager<T> {
 
-    Optional<T> load();
+    Optional<Collection<T>> load();
 
-    boolean save(T t);
+    boolean save(Collection<T> t);
 
     default Executor getExecutor() {
         throw new NullPointerException("Executor has not been set!");
     }
 
-    default CompletableFuture<Optional<T>> loadAsync() {
+    default CompletableFuture<Optional<Collection<T>>> loadAsync() {
         return CompletableFuture.supplyAsync(this::load, getExecutor());
     }
 
-    default CompletableFuture<Boolean> saveAsync(T t) {
+    default CompletableFuture<Boolean> saveAsync(Collection<T> t) {
         return CompletableFuture.supplyAsync(() -> save(t), getExecutor());
     }
 

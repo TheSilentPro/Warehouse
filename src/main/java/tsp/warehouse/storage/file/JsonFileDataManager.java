@@ -36,7 +36,7 @@ public class JsonFileDataManager<T extends Collection<T>> extends FileDataManage
     }
 
     @Override
-    public Optional<T> load() {
+    public Optional<Collection<T>> load() {
         try {
             return gson.fromJson(new FileReader(getFile()), type);
         } catch (FileNotFoundException e) {
@@ -46,7 +46,7 @@ public class JsonFileDataManager<T extends Collection<T>> extends FileDataManage
     }
 
     @Override
-    public boolean save(T t) {
+    public boolean save(Collection<T> t) {
         try {
             gson.toJson(t, type, new JsonWriter(new FileWriter(getFile())));
             return true;
