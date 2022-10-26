@@ -15,7 +15,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Collection;
-import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 /**
  * Json based storage.
@@ -37,23 +38,23 @@ public class JsonFileDataManager<T> extends FileDataManager<T> {
     }
 
     @Override
-    public Optional<Collection<T>> load() {
-        try {
-            return gson.fromJson(new FileReader(getFile()), type);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return Optional.empty();
-        }
+    public CompletableFuture<Collection<T>> load() {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return gson.fromJson(new FileReader(getFile()), type);
+            } catch (FileNotFoundException ex) {
+                throw new CompletionException(ex);
+            }
+        });
     }
 
     @Override
-    public boolean save(Collection<T> t) {
+    public CompletableFuture<Boolean> save(Collection<T> t) {
         try {
             gson.toJson(t, type, new JsonWriter(new FileWriter(getFile())));
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
+            return CompletableFuture.completedFuture(true);
+        } catch (IOException ex) {
+            throw new CompletionException(ex);
         }
     }
 

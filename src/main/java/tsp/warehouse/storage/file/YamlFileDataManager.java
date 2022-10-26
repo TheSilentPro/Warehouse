@@ -11,7 +11,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 /**
  * Yaml based storage.
@@ -42,24 +43,24 @@ public class YamlFileDataManager<T> extends FileDataManager<T> {
     }
 
     @Override
-    public Optional<Collection<T>> load() {
-        try {
-            FileReader reader = new FileReader(getFile());
-            return Optional.ofNullable(type != null ? yaml.loadAs(reader, type) : yaml.load(reader));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return Optional.empty();
-        }
+    public CompletableFuture<Collection<T>> load() {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                FileReader reader = new FileReader(getFile());
+                return type != null ? yaml.loadAs(reader, type) : yaml.load(reader);
+            } catch (FileNotFoundException ex) {
+                throw new CompletionException(ex);
+            }
+        });
     }
 
     @Override
-    public boolean save(Collection<T> t) {
+    public CompletableFuture<Boolean> save(Collection<T> t) {
         try (FileWriter writer = new FileWriter(getFile())) {
             yaml.dump(t, writer);
-            return true;
-        } catch (IOException exception) {
-            exception.printStackTrace();
-            return false;
+            return CompletableFuture.completedFuture(true);
+        } catch (IOException ex) {
+            throw new CompletionException(ex);
         }
     }
 
