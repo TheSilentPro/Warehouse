@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Optional;
 
 /**
@@ -17,7 +18,7 @@ import java.util.Optional;
  *
  * @param <T> Type
  */
-public class YamlFileDataManager<T> extends FileDataManager<T> {
+public class YamlFileDataManager<T extends Collection<T>> extends FileDataManager<T> {
 
     private final Class<T> type;
     private Yaml yaml;

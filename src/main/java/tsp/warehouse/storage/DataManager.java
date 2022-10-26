@@ -1,5 +1,6 @@
 package tsp.warehouse.storage;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -9,7 +10,7 @@ import java.util.concurrent.Executor;
  *
  * @param <T> Type
  */
-public interface DataManager<T> {
+public interface DataManager<T extends Collection<T>> {
 
     Optional<T> load();
 

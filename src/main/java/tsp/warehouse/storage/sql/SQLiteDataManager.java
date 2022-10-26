@@ -2,6 +2,7 @@ package tsp.warehouse.storage.sql;
 
 import javax.annotation.Nonnull;
 import java.io.File;
+import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -10,7 +11,7 @@ import java.util.concurrent.Executor;
  *
  * @param <T>
  */
-public abstract class SQLiteDataManager<T> extends SQLDataManager<T> {
+public abstract class SQLiteDataManager<T extends Collection<T>> extends SQLDataManager<T> {
 
     public SQLiteDataManager(@Nonnull File file, @Nonnull Executor executor) {
         super("jdbc:sqlite:" + file.getAbsolutePath(), executor);

@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.Optional;
 
 /**
@@ -21,7 +22,7 @@ import java.util.Optional;
  *
  * @param <T> Type
  */
-public class JsonFileDataManager<T> extends FileDataManager<T> {
+public class JsonFileDataManager<T extends Collection<T>> extends FileDataManager<T> {
 
     private final Type type;
     private Gson gson;

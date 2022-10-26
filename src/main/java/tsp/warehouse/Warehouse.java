@@ -7,6 +7,7 @@ import tsp.warehouse.storage.file.YamlFileDataManager;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
+import java.util.Collection;
 
 /**
  * Warehouse - Storage Manager
@@ -15,19 +16,19 @@ import java.io.File;
  */
 public class Warehouse {
 
-    public static <T> JsonFileDataManager<T> json(@Nonnull File file, @Nonnull Class<T> type) {
+    public static <T extends Collection<T>> JsonFileDataManager<T> json(@Nonnull File file, @Nonnull Class<T> type) {
         return new JsonFileDataManager<>(file, type);
     }
 
-    public static <T> YamlFileDataManager<T> yaml(@Nonnull File file, @Nullable Class<T> type, @Nullable DumperOptions dumperOptions) {
+    public static <T extends Collection<T>> YamlFileDataManager<T> yaml(@Nonnull File file, @Nullable Class<T> type, @Nullable DumperOptions dumperOptions) {
         return new YamlFileDataManager<>(file, type, dumperOptions);
     }
 
-    public static <T> YamlFileDataManager<T> yaml(@Nonnull File file, @Nullable Class<T> type) {
+    public static <T extends Collection<T>> YamlFileDataManager<T> yaml(@Nonnull File file, @Nullable Class<T> type) {
         return yaml(file, type, null);
     }
 
-    public static <T> YamlFileDataManager<T> yaml(@Nonnull File file) {
+    public static <T extends Collection<T>> YamlFileDataManager<T> yaml(@Nonnull File file) {
         return yaml(file, null);
     }
 
