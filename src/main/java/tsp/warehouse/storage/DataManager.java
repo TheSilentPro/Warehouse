@@ -9,6 +9,7 @@ import java.util.concurrent.Executor;
  *
  * @param <T> Type
  */
+@SuppressWarnings("unused")
 public interface DataManager<T> {
 
     CompletableFuture<Collection<T>> load();
@@ -16,7 +17,7 @@ public interface DataManager<T> {
     CompletableFuture<Boolean> save(Collection<T> t);
 
     default Executor getExecutor() {
-        throw new NullPointerException("Executor has not been set!");
+        throw new UnsupportedOperationException("Executor has not been implemented!");
     }
 
 }

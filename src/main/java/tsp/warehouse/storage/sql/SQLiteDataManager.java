@@ -1,8 +1,8 @@
 package tsp.warehouse.storage.sql;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 /**
@@ -12,12 +12,8 @@ import java.util.concurrent.Executor;
  */
 public abstract class SQLiteDataManager<T> extends SQLDataManager<T> {
 
-    public SQLiteDataManager(@Nonnull File file, @Nonnull Executor executor) {
+    public SQLiteDataManager(@Nonnull File file, @Nullable Executor executor) {
         super("jdbc:sqlite:" + file.getAbsolutePath(), executor);
-    }
-
-    public CompletableFuture<Integer> createTable(String name) {
-        return sendPreparedUpdate("CREATE TABLE IF NOT EXISTS " + name);
     }
 
 }

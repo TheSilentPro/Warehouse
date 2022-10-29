@@ -1,9 +1,10 @@
 package tsp.warehouse.storage.sql;
 
 import tsp.warehouse.storage.DataManager;
-import tsp.warehouse.storage.util.Validate;
+import tsp.warehouse.storage.util.WHValidate;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * SQL based storage.
@@ -22,21 +24,11 @@ public abstract class SQLDataManager<T> implements DataManager<T> {
     private final String url;
     private final Executor executor;
 
-    public SQLDataManager(@Nonnull String url, @Nonnull Executor executor) {
-        Validate.notNull(url, "URL can not be null!");
-        Validate.notNull(executor, "Executor can not be null!");
+    public SQLDataManager(@Nonnull String url, @Nullable Executor executor) {
+        WHValidate.notNull(url, "URL can not be null!");
 
         this.url = url;
-        this.executor = executor;
-    }
-
-    @Override
-    public Executor getExecutor() {
-        return executor;
-    }
-
-    public String getUrl() {
-        return url;
+        this.executor = executor != null ? executor : Executors.newFixedThreadPool(1);
     }
 
     public CompletableFuture<Integer> sendPreparedUpdate(String statement) {
@@ -71,6 +63,10 @@ public abstract class SQLDataManager<T> implements DataManager<T> {
 
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url);
+    }
+
+    public String getUrl() {
+        return url;
     }
 
 }

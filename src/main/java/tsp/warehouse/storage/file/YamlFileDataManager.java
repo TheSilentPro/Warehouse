@@ -13,33 +13,28 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.Executor;
 
 /**
  * Yaml based storage.
  *
  * @param <T> Type
  */
+@SuppressWarnings("unused")
 public class YamlFileDataManager<T> extends FileDataManager<T> {
 
     private final Class<Collection<T>> type;
     private Yaml yaml;
 
-    public YamlFileDataManager(@Nonnull File file, @Nullable DumperOptions dumperOptions) {
-        super(file);
+    public YamlFileDataManager(@Nonnull File file, @Nullable DumperOptions dumperOptions, @Nullable Executor executor) {
+        super(file, executor);
         //noinspection unchecked
         this.type = (Class<Collection<T>>) (Class<T>) Collection.class;
         this.yaml = dumperOptions != null ? new Yaml(dumperOptions) : new Yaml();
     }
+
     public YamlFileDataManager(@Nonnull File file) {
-        this(file, null);
-    }
-
-    public Yaml getYaml() {
-        return yaml;
-    }
-
-    public void setYaml(Yaml yaml) {
-        this.yaml = yaml;
+        this(file, null, null);
     }
 
     @Override
@@ -51,17 +46,27 @@ public class YamlFileDataManager<T> extends FileDataManager<T> {
             } catch (FileNotFoundException ex) {
                 throw new CompletionException(ex);
             }
-        });
+        }, getExecutor());
     }
 
     @Override
     public CompletableFuture<Boolean> save(Collection<T> t) {
-        try (FileWriter writer = new FileWriter(getFile())) {
-            yaml.dump(t, writer);
-            return CompletableFuture.completedFuture(true);
-        } catch (IOException ex) {
-            throw new CompletionException(ex);
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            try (FileWriter writer = new FileWriter(getFile())) {
+                yaml.dump(t, writer);
+                return true;
+            } catch (IOException ex) {
+                throw new CompletionException(ex);
+            }
+        }, getExecutor());
+    }
+
+    public Yaml getYaml() {
+        return yaml;
+    }
+
+    public void setYaml(Yaml yaml) {
+        this.yaml = yaml;
     }
 
 }
