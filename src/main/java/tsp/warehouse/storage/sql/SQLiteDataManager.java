@@ -10,6 +10,7 @@ import java.util.concurrent.Executor;
  *
  * @param <T>
  */
+@SuppressWarnings("unused")
 public abstract class SQLiteDataManager<T> extends SQLDataManager<T> {
 
     public SQLiteDataManager(@Nonnull File file, @Nullable Executor executor) {

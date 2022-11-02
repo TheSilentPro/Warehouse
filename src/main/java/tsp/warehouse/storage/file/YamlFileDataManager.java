@@ -10,7 +10,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.Executor;
@@ -23,13 +22,13 @@ import java.util.concurrent.Executor;
 @SuppressWarnings("unused")
 public class YamlFileDataManager<T> extends FileDataManager<T> {
 
-    private final Class<Collection<T>> type;
+    private final Class<T> type;
     private Yaml yaml;
 
     public YamlFileDataManager(@Nonnull File file, @Nullable DumperOptions dumperOptions, @Nullable Executor executor) {
         super(file, executor);
         //noinspection unchecked
-        this.type = (Class<Collection<T>>) (Class<T>) Collection.class;
+        this.type = (Class<T>) Class.class;
         this.yaml = dumperOptions != null ? new Yaml(dumperOptions) : new Yaml();
     }
 
@@ -38,7 +37,7 @@ public class YamlFileDataManager<T> extends FileDataManager<T> {
     }
 
     @Override
-    public CompletableFuture<Collection<T>> load() {
+    public CompletableFuture<T> load() {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 FileReader reader = new FileReader(getFile());
@@ -50,7 +49,7 @@ public class YamlFileDataManager<T> extends FileDataManager<T> {
     }
 
     @Override
-    public CompletableFuture<Boolean> save(Collection<T> t) {
+    public CompletableFuture<Boolean> save(T t) {
         return CompletableFuture.supplyAsync(() -> {
             try (FileWriter writer = new FileWriter(getFile())) {
                 yaml.dump(t, writer);

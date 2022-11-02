@@ -41,7 +41,7 @@ public class JsonFileDataManager<T> extends FileDataManager<T> {
     }
 
     @Override
-    public CompletableFuture<Collection<T>> load() {
+    public CompletableFuture<T> load() {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return gson.fromJson(new FileReader(getFile()), type);
@@ -52,7 +52,7 @@ public class JsonFileDataManager<T> extends FileDataManager<T> {
     }
 
     @Override
-    public CompletableFuture<Boolean> save(Collection<T> t) {
+    public CompletableFuture<Boolean> save(T t) {
         return CompletableFuture.supplyAsync(() -> {
             try (FileWriter writer = new FileWriter(getFile())) {
                 gson.toJson(t, type, writer);

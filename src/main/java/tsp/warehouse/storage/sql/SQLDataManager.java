@@ -19,6 +19,7 @@ import java.util.concurrent.Executors;
  *
  * @param <T> Type
  */
+@SuppressWarnings("unused")
 public abstract class SQLDataManager<T> implements DataManager<T> {
 
     private final String url;

@@ -1,6 +1,5 @@
 package tsp.warehouse.storage;
 
-import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -12,9 +11,9 @@ import java.util.concurrent.Executor;
 @SuppressWarnings("unused")
 public interface DataManager<T> {
 
-    CompletableFuture<Collection<T>> load();
+    CompletableFuture<T> load();
 
-    CompletableFuture<Boolean> save(Collection<T> t);
+    CompletableFuture<Boolean> save(T data);
 
     default Executor getExecutor() {
         throw new UnsupportedOperationException("Executor has not been implemented!");
