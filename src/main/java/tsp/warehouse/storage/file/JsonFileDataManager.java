@@ -13,7 +13,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.Executor;
@@ -32,7 +31,7 @@ public class JsonFileDataManager<T> extends FileDataManager<T> {
     public JsonFileDataManager(@Nonnull File file, @Nullable Executor executor) {
         super(file, executor);
 
-        this.type =  new TypeToken<Collection<T>>(){}.getType();
+        this.type =  new TypeToken<T>(){}.getType();
         this.gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
     }
 
