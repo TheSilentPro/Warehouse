@@ -19,8 +19,10 @@ import java.util.concurrent.Executor;
 
 /**
  * Json based storage.
+ * Note: Make sure to register custom objects with {@link tsp.warehouse.storage.util.JsonMapper}.
  *
  * @param <T> Type
+ * @see GsonBuilder#registerTypeAdapter(Type, Object)
  */
 @SuppressWarnings("unused")
 public class JsonFileDataManager<T> extends FileDataManager<T> {
@@ -31,7 +33,7 @@ public class JsonFileDataManager<T> extends FileDataManager<T> {
     public JsonFileDataManager(@Nonnull File file, @Nullable Executor executor) {
         super(file, executor);
 
-        this.type =  new TypeToken<T>(){}.getType();
+        this.type = new TypeToken<T>(){}.getType();
         this.gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
     }
 
@@ -62,8 +64,9 @@ public class JsonFileDataManager<T> extends FileDataManager<T> {
         }, getExecutor());
     }
 
-    public void setGson(Gson gson) {
+    public JsonFileDataManager<T> gson(Gson gson) {
         this.gson = gson;
+        return this;
     }
 
     public Gson getGson() {

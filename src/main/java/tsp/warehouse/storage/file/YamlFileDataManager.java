@@ -22,13 +22,10 @@ import java.util.concurrent.Executor;
 @SuppressWarnings("unused")
 public class YamlFileDataManager<T> extends FileDataManager<T> {
 
-    private final Class<T> type;
     private Yaml yaml;
 
     public YamlFileDataManager(@Nonnull File file, @Nullable DumperOptions dumperOptions, @Nullable Executor executor) {
         super(file, executor);
-        //noinspection unchecked
-        this.type = (Class<T>) Class.class;
         this.yaml = dumperOptions != null ? new Yaml(dumperOptions) : new Yaml();
     }
 
@@ -41,7 +38,7 @@ public class YamlFileDataManager<T> extends FileDataManager<T> {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 FileReader reader = new FileReader(getFile());
-                return type != null ? yaml.loadAs(reader, type) : yaml.load(reader);
+                return yaml.load(reader);
             } catch (FileNotFoundException ex) {
                 throw new CompletionException(ex);
             }
@@ -64,8 +61,9 @@ public class YamlFileDataManager<T> extends FileDataManager<T> {
         return yaml;
     }
 
-    public void setYaml(Yaml yaml) {
+    public YamlFileDataManager<T> yaml(Yaml yaml) {
         this.yaml = yaml;
+        return this;
     }
 
 }
